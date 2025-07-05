@@ -3,7 +3,7 @@ const app = express();
 const { userRouter } = require("./routes/user");
 
 
-app.use("api/v1/user", userRouter);
+app.use("/api/v1/user", userRouter);
 
 
 app.post("/admin/signup", (req, res) => {
