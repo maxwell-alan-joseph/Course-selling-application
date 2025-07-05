@@ -1,27 +1,12 @@
 const express = require('express');
 const app = express();
 const { userRouter } = require("./routes/user");
-
+const { adminRouter } = require("./routes/admin")
 
 app.use("/api/v1/user", userRouter);
 
+app.use("/api/v1/admin", adminRouter);
 
-app.post("/admin/signup", (req, res) => {
-
-});
-
-app.post("/admin/signup", (req, res) => {
-
-});
-
-app.post("/admin/login", (req, res) => {
-
-});
-
-app.delete("/admin/delete-course", (req, res) => {
-
-});
-
-app.put("/admin/change-course", (req, res) => {
-
-});
+app.listen(3000, () => {
+    console.log("Server running on port 3000");
+})

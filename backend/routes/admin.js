@@ -43,3 +43,7 @@ adminRouter.post("/delete-course", (req, res) => {
         message: "option to delete the course"
     });
 });
+
+module.exports = {
+    adminRouter: adminRouter
+}
