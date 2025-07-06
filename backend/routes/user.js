@@ -14,17 +14,17 @@ userRouter.post("/login", (req, res) => {
     })
 });
 
-userRouter.post("/dashboard", (req, res) => {
-    res.json({
-        message: "dashboard for his/her courses"
-    });
-});
+// userRouter.post("/dashboard", (req, res) => {
+//     res.json({
+//         message: "dashboard for his/her courses"
+//     });
+// });
 
-userRouter.get("/purchase", (req, res) => {
-    res.json({
-        message: "getaway to purchase his/her course"
-    });
-});
+// userRouter.get("/purchase", (req, res) => {
+//     res.json({
+//         message: "getaway to purchase his/her course"
+//     });
+// });
 
 module.exports = {
     userRouter: userRouter
