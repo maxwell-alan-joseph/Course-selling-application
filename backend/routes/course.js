@@ -4,24 +4,37 @@ const courseRouter = Router();
 
 
 courseRouter.get("/dashboard", (req, res) => {
+
+    const userId = req.userId;
+
     res.json({
         message: "dashboard for user courses!"
     });
 });
 
 courseRouter.get("/purchase", (req, res) => {
+
+    const userId = req.userId;
+    const courseId = req.courseId;
+
     res.json({
         message: "purchase endpoint where the user can buy the course "
     });
 });
 
 courseRouter.get("/dashboard", (req, res) => {
+
+    const adminId = req.adminId;
+
     res.json({
         message: "dashboard for admin courses!"
     });
 });
 
 courseRouter.get("my/", (req, res) => {
+
+    const adminId = req.adminId
+
     res.json({
         message: "list of admin courses"
     })
@@ -39,12 +52,18 @@ courseRouter.post("/create|add", (req, res) => {
 });
 
 courseRouter.post("/update", (req, res) => {
+
+    const courseId = req.courseId;
+    
     res.json({
         message: "updated course by admin"
     })
 });
 
 courseRouter.delete("/delete", (req, res) => {
+
+    const courseId = req.courseId;
+    
     res.json({
         message: "Deleted the course"
     });
