@@ -2,27 +2,30 @@ const {Router} = require('express');
 
 const adminRouter = Router();
 
-adminRouter.post("/signup", (req, res) => {
+adminRouter.post("/signup", async (req, res) => {
+    const { email, password, name } = req.body;
 
-    const firsName = req.body.firstName;
-    const lastName = req.body.lastName;
-    const email = req.body.lastName;
-    const password = req.body.password;
-
-    res.json({
-        message: "you are signed up "
+    await adminModel.create({
+        email, password, name
     });
-});
-
-adminRouter.post("/login", (req, res) => {
-    
-    const email = req.body.email;
-    const password = req.body.password;
     
     res.json({
-        message: "you are logged in"
+        message: "You are signed up as an admin"
     });
-});
+})
+
+adminRouter.post("/login", async (req, res) => {
+    const { email, password } = req.body
+
+    await adminModel.findOne({
+        email, password
+    })
+
+    res.json({
+        message: "You are logged in"
+    })
+})
+
 
 module.exports = {
     adminRouter: adminRouter

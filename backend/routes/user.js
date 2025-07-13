@@ -2,26 +2,43 @@ const { Router } = require('express');
 const userRouter = Router();
 
 
-userRouter.post("/signup", (req, res) => {
+userRouter.post("/signup", async (req, res) => {
+    const { email, password, name} = req.body;
 
-    const firstName = req.body.firstName;
-    const lastName = req.body.lastName;
-    const email = req.body.email;
-    const password = req.body.password;
-
-    res.json({
-        message: "you are signed-up"
+   await userModel.create({
+        email, password, name
     })
-});
-
-userRouter.post("/login", (req, res) => {
-    const email = req.body.email;
-    const password = req.body.password;
     
     res.json({
-        message: "you are logged in"
+        message: "You are signed up"
     })
 });
+
+userRouter.post("/login", async (req, res) => {
+    const { email, password} = req.body;
+
+    await userModel.findOne ({
+        email, password
+    })
+
+    res.json({
+        message: "You are logged in ! Welcome Back"
+    })
+});
+
+userRouter.post("/purchase", (req, res) => {
+    const userId = req.userId;
+    const courseId = req.body.courseId;
+
+ //if the userId has the valid token and if the courseId from the course-db is true then await him on a buffer page for 5 seconds and redirect
+ //him to the notification page saying "Congratulations on the course! Happy learning"
+
+ res.json({
+    message: "Congratulation on buying the course ! Happy Learning!"
+ })
+
+})
+
 
 module.exports = {
     userRouter: userRouter

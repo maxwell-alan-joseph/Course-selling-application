@@ -3,71 +3,58 @@ const { Router } = require('express');
 const courseRouter = Router();
 
 
-courseRouter.get("/dashboard", (req, res) => {
-
+courseRouter.post("/post", (req, res) => {
     const userId = req.userId;
+    const courseId = req.courseId; 
 
     res.json({
-        message: "dashboard for user courses!"
-    });
-});
-
-courseRouter.get("/purchase", (req, res) => {
-
-    const userId = req.userId;
-    const courseId = req.courseId;
-
-    res.json({
-        message: "purchase endpoint where the user can buy the course "
-    });
-});
+        message: "You've bought the course\n Redirecting you to your Dashboard"
+    })
+})
 
 courseRouter.get("/dashboard", (req, res) => {
-
+    const userId = req.userId;
     const adminId = req.adminId;
 
     res.json({
-        message: "dashboard for admin courses!"
+        message: "Here's your dashboard"
     });
-});
 
-courseRouter.get("my/", (req, res) => {
+})
 
-    const adminId = req.adminId
+courseRouter.post("/add-course", async (req, res) => {
+
+    const {title, description, price, content } = req.body;
+//generate a creatorId for admin when he is creating a course
+//this particular creatorId should be same for all his/her courses 
+    await courseModel.create({
+        title, creatorId, description, price, content
+    })
 
     res.json({
-        message: "list of admin courses"
+        message: "Your course has been successfully created"
     })
-});
+})
 
-courseRouter.post("/create|add", (req, res) => {
-    const title = req.body.title;
-    const description = req.body.description;
-    const price = req.body.price;
-    const content = req.body.content;
-
-    res.json({
-        message: "created course"
-    })
-});
-
-courseRouter.post("/update", (req, res) => {
-
-    const courseId = req.courseId;
+courseRouter.patch("/edit-course", (req, res) => {
+    const courseId = req.body.courseId;
+    const creatorId = req.body.creatorId;
     
     res.json({
-        message: "updated course by admin"
-    })
-});
-
-courseRouter.delete("/delete", (req, res) => {
-
-    const courseId = req.courseId;
-    
-    res.json({
-        message: "Deleted the course"
+        message: "You're changes has been made"
     });
-});
+})
+
+courseRouter.delete("/delete-course", (req, res) => {
+    const adminId = req.adminId;
+    const creatorId = req.body.creatorId;
+//validate the creatorId that admin sent with his generated creatorId
+    const courseId = req.courseId;
+
+    res.json({
+        message: "Removing all your course related contents"
+    })
+})
 
 module.exports = {
     courseRouter: courseRouter
