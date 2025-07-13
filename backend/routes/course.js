@@ -1,4 +1,7 @@
 const { Router } = require('express');
+const mongoose = require('mongoose');
+
+const { userModel, adminModel, courseModel } = require("./db");
  
 const courseRouter = Router();
 

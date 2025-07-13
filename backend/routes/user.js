@@ -1,5 +1,8 @@
 const { Router } = require('express');
 const userRouter = Router();
+const mongoose = require('mongoose');
+
+const { userModel, adminModel, courseModel } = require("./db");
 
 
 userRouter.post("/signup", async (req, res) => {
