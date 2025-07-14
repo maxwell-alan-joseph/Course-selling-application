@@ -1,8 +1,10 @@
 const { Router } = require('express');
-const userRouter = Router();
+const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
-
 const { userModel, adminModel, courseModel } = require("./db");
+
+const userRouter = Router();
+const JWT_SECRET = "pass"
 
 
 userRouter.post("/signup", async (req, res) => {
@@ -20,9 +22,24 @@ userRouter.post("/signup", async (req, res) => {
 userRouter.post("/login", async (req, res) => {
     const { email, password} = req.body;
 
-    await userModel.findOne ({
+    const user = await userModel.findOne ({
         email, password
     })
+
+    if(user) {
+        const token = jwt.sign({
+            id: user._id.toString()
+        }, JWT_SECRET)
+
+        res.json({
+            token,
+            message: "You are logged in"
+        })
+    } else {
+        res.status(300).json({
+            message: "invalid credentials"
+        })
+    }
 
     res.json({
         message: "You are logged in ! Welcome Back"
