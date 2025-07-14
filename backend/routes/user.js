@@ -46,18 +46,42 @@ userRouter.post("/login", async (req, res) => {
     })
 });
 
-userRouter.post("/purchase", (req, res) => {
-    const userId = req.userId;
-    const courseId = req.body.courseId;
-
+userRouter.post("/purchase", async (req, res) => {
  //if the userId has the valid token and if the courseId from the course-db is true then await him on a buffer page for 5 seconds and redirect
  //him to the notification page saying "Congratulations on the course! Happy learning"
 
- res.json({
-    message: "Congratulation on buying the course ! Happy Learning!"
- })
+    const userId = req.userId;
+    const courseId = req.body.courseId;
 
-})
+    if(!courseId) {
+        return res.status(400).json({
+            message: "course Id required"
+        })
+    }
+
+//checking if course exists 
+    const course = await courseModel.findById(courseId);
+    if(!courseId) {
+        return res.status(400).json({
+            message: "course not found"
+        })
+    }
+
+    setTimeout( async () => {
+        //adding courseId to user's purchased courses
+        await userModel.findByIdAndUpdate(userId, {
+            $addToSet: { purchasedCourses: courseId}
+        });
+        
+     
+     res.json({
+        message: "Congratulation on buying the course ! Happy Learning!"
+        courseId: courseId,
+        courseName: course.title,
+        redirectUrl: "/courses"
+        });
+    }, 2000);
+});
 
 
 module.exports = {
