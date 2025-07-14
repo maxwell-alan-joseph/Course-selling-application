@@ -33,17 +33,13 @@ userRouter.post("/login", async (req, res) => {
 
         res.json({
             token,
-            message: "You are logged in"
+            message: "You are logged in! Welcome Back!"
         })
     } else {
         res.status(300).json({
             message: "invalid credentials"
         })
     }
-
-    res.json({
-        message: "You are logged in ! Welcome Back"
-    })
 });
 
 userRouter.post("/purchase", async (req, res) => {
@@ -61,7 +57,7 @@ userRouter.post("/purchase", async (req, res) => {
 
 //checking if course exists 
     const course = await courseModel.findById(courseId);
-    if(!courseId) {
+    if(!course) {
         return res.status(400).json({
             message: "course not found"
         })
@@ -75,12 +71,12 @@ userRouter.post("/purchase", async (req, res) => {
         
      
      res.json({
-        message: "Congratulation on buying the course ! Happy Learning!"
+        message: "Congratulation on buying the course ! Happy Learning!",
         courseId: courseId,
         courseName: course.title,
         redirectUrl: "/courses"
         });
-    }, 2000);
+    }, 3000);
 });
 
 
