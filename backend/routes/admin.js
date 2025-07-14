@@ -1,5 +1,6 @@
 const {Router} = require('express');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 
 const { userModel, adminModel, courseModel } = require("./db");
 const adminRouter = Router();
