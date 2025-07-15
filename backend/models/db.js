@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const ObjectId = mongoose.ObjectId;
 
 const userSchema = new Schema({
-    email: {type: String, unique: type, required: true, lowercase: true},
+    email: {type: String, unique: true, required: true, lowercase: true},
     password: {type: String, required: true, minlength: 8}, 
     name: { type: String, required: true},
     purchasedCourses: [{
