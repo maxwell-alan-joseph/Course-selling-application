@@ -3,14 +3,18 @@ const validateRequest = (schema) => {
         try {
             schema.parse(req.body);
             next();
-        } catch (err) {
+        } catch (err) { 
             return res.status(400).json({
                 message: "validation failed", 
-                errors: error.errors.map( err => ({
-                    field: err.path.join('.');
+                errors: err.errors.map( err => ({
+                    field: err.path.join('.'),
                     message: err.message
                 }))
             });
         }
     };
-} ;
+};
+
+module.exports = {
+    validateRequest
+};
