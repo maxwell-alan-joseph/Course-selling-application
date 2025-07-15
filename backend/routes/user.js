@@ -89,43 +89,48 @@ userRouter.post("/login", validateRequest(userLoginSchema),  async (req, res) =>
     }
 });
 
-userRouter.post("/courses", async (req, res) => {
- //if the userId has the valid token and if the courseId from the course-db is true then await him on a buffer page for 5 seconds and redirect
- //him to the notification page saying "Congratulations on the course! Happy learning"
+userRouter.get("/courses", async (req, res) => {
 
-    const userId = req.userId;
-    const courseId = req.body.courseId;
-
-    if(!courseId) {
-        return res.status(400).json({
-            message: "course Id required"
+    try{
+        const courses = await courseModel.find({
+            isPublished: true
         })
-    }
+        .populate('createdBy', 'name email')
+        .select('-content');
 
-//checking if course exists 
-    const course = await courseModel.findById(courseId);
-    if(!course) {
-        return res.status(400).json({
-            message: "course not found"
-        })
-    }
+        res.json({
+            message: "Courses fetched successfully",
+            courses
+        });
 
-    setTimeout( async () => {
-        //adding courseId to user's purchased courses
-        await userModel.findByIdAndUpdate(userId, {
-            $addToSet: { purchasedCourses: courseId}
+    } catch (err) {
+        res.status(500).json({
+            message: "Server error"
         });
-        
-     
-     res.json({
-        message: "Congratulation on buying the course ! Happy Learning!",
-        courseId: courseId,
-        courseName: course.title,
-        redirectUrl: "/courses"
-        });
-    }, 3000);
+    }
 });
 
+userRouter.get("/purchased-courses", userAuthMiddleware, async(req, res) => {
+    try {
+        const user = await userModel.findById(req.userId)
+        .populate('purchasedCourses')
+        .select('purchasedCourses');
+
+        res.json({
+            message: "Purchased courses fetched successfully",
+            purchaseCourses: user.purchaseCourses
+        });
+
+    } catch (err) {
+        res.status(500).json({
+            message: "server error"
+        });
+    }
+});
+
+userRouter.post("/purchase", userAuthMiddleware, validateRequest(purchaseSchema), async (req, res) => {
+    
+})
 
 module.exports = {
     userRouter: userRouter
