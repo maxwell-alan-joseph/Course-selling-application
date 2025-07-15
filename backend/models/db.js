@@ -4,16 +4,22 @@ const bcrypt = require('bcryptjs');
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.ObjectId;
 
-const userSchema = new Schema({
-    email: {type: String, unique: true, required: true, lowercase: true},
-    password: {type: String, required: true, minlength: 8}, 
-    name: { type: String, required: true},
-    purchasedCourses: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Course'
-    }],
-    timestamps: true
-});
+const userSchema = new Schema (
+    {
+    email: { type: String, unique: true, required: true, lowercase: true },
+    password: { type: String, required: true, minlength: 8 },
+    name: { type: String, required: true },
+    purchasedCourses: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Course'
+        }
+    ]
+    },
+    {
+        timestamps: true
+    }
+);
 
 userSchema.pre('save', async (next) => {
     if (!this.isModified('password')) 
@@ -22,12 +28,14 @@ userSchema.pre('save', async (next) => {
     next();
 });
 
-const adminSchema = new Schema({
+const adminSchema = new Schema(
+    {
     email: {type: String, unique: type, required: true, lowercase: true},
     password: {type: String, required: true, minlength: 8},
-    name: {type: String, required: true},
-    timestamps: true
-});
+    name: {type: String, required: true} 
+    },
+    { timestamps: true }
+);
 
 adminSchema.pre('save', async (next) => {
     if (!this.isModified('password'))
@@ -43,8 +51,9 @@ const courseSchema = new Schema({
     content: {type: String, required: true},
     createdBy: {type: mongoose.Schema.Types.ObjectId, ref: 'Admin', required: true}, 
     isPublished: {type: Boolean, default: true},
-    timestamps: true
-})
+    
+}, { timestamps: true} 
+);
 
 
 
