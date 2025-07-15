@@ -105,6 +105,40 @@ adminRouter.post("/courses", adminAuthMiddleware, validateRequest(createCourseSc
     }
 });
 
+adminRouter.put("/courses/:courseId", adminAuthMiddleware, validateRequest(updateCourseSchema), async (req, res) => {
+    try {
+        const { courseId } = req.params;
+        const adminId = req.adminId;
+        const updateData = req.body;
+
+        //checking if course exists and belongs to admin
+        const course = await courseModel.findOne({
+            _id: courseId, createdBy: adminId
+        });
+        if(!course){
+            return res.status(400).json({
+                message: "course not found or unauthorized"
+            });
+        }
+
+        const updatedCourse = await courseModel.findByIdAndUpdate(
+            courseId, updateData, 
+            {new: true, runValidators: true}
+        );
+
+        res.json({
+            message: "course updated successfully",
+            course: updatedCourse
+        });
+    } catch (err) {
+        res.status(500).json({
+            message: "server error"
+        })
+    }
+});
+
+
+
 
 
 
