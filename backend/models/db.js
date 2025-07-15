@@ -37,17 +37,20 @@ adminSchema.pre('save', async (next) => {
 });
 
 const courseSchema = new Schema({
-    userId: ObjectId, 
-    adminId: ObjectId,
-    title: String,
-    description: String,
-    price: Number,
-    content: String
+    title: {type: String, required: true},
+    description: {type: String, required: true},
+    price: {type: Number, required: true, min: 0},
+    content: {type: String, required: true},
+    createdBy: {type: mongoose.Schema.Types.ObjectId, ref: 'Admin', required: true}, 
+    isPublished: {type: Boolean, default: true},
+    timestamps: true
 })
 
-const userModel = mongoose.model("userDb", userSchema);
-const adminModel = mongoose.model("adminDb", adminSchema);
-const courseModel = mongoose.model("courseDb", courseSchema);
+
+
+const userModel = mongoose.model("User", userSchema);
+const adminModel = mongoose.model("Admin", adminSchema);
+const courseModel = mongoose.model("Course", courseSchema);
 
 module.exports = {
     userModel, adminModel, courseModel
