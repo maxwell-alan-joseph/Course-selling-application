@@ -10,7 +10,7 @@ const { JWT_SECRET } = require("../config/config");
 
 const adminRouter = Router();
 
-adminRouter.post("/signup", async (req, res) => {
+adminRouter.post("/signup", validateRequest(adminSignupSchema), async (req, res) => {
     try {
         const { name, email, password } = req.body;
 
@@ -46,7 +46,7 @@ adminRouter.post("/signup", async (req, res) => {
 
 });
 
-adminRouter.post("/login", async (req, res) => {
+adminRouter.post("/login", validateRequest(adminLoginSchema), async (req, res) => {
     try {
         const { email, password } = req.body;
 
