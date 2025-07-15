@@ -129,9 +129,52 @@ userRouter.get("/purchased-courses", userAuthMiddleware, async(req, res) => {
 });
 
 userRouter.post("/purchase", userAuthMiddleware, validateRequest(purchaseSchema), async (req, res) => {
-    
+    try {
+        const { courseId } = req.body; 
+        const userId = req.userId; 
+
+        const course = await courseModel.findById(courseId);
+        if(!course){
+            return res.json(401).json({
+                message: "course not found"
+            });
+        }
+
+        const user = await userModel.findById(userId);
+        if(user.purchaseCourses.includes(courseId)) {
+            return res.status(401).json({
+                message: "You have already purchased this course"
+            });
+        }
+
+        setTimeout(async () => {
+            try {
+                await userModel.findByIdAndUpdate(userId, {
+                    $addToSet: {
+                        purchasedCourses: courseId
+                    }
+                });
+
+                res.json({
+                    message: "congratulations on buying the course! Happy Learning!",
+                    courseId: courseId,
+                    courseName: course.title,
+                    redirectUrl: "/courses"
+                });
+            } catch (err) {
+                res.status(500).json({
+                    message: "Purchased failed"
+                })
+            }
+        }, 3000);
+
+    } catch (err) {
+        res.status(500).json({
+            message: "server error"
+        });
+    }
 })
 
 module.exports = {
     userRouter: userRouter
-}
+};
