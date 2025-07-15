@@ -13,4 +13,4 @@ const adminLoginSchema = z.object({
 
 module.exports = {
     adminSignupSchema, adminLoginSchema
-}
+};
