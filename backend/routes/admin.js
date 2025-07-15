@@ -138,10 +138,35 @@ adminRouter.put("/courses/:courseId", adminAuthMiddleware, validateRequest(updat
 });
 
 
+adminRouter.delete("/courses/:courseId", adminRouter, async (req, res) => {
+    try {
+        const { courseId } = req.params;
+        const adminId = req.adminId;
 
+        const course = await courseModel.findOne({
+            _id: courseId, 
+            createdBy: adminId
+        });
+        if(!course){
+            return res.status(400).json({
+                message: "course not found or unauthorized "
+            });
+        }
+
+        await courseModel.findByIdAndDelete(courseId);
+        
+        res.json({
+            message: "course deleted successfully"
+        });
+    } catch (err) {
+        res.status(500).json({
+            message: "server error"
+        });
+    }
+});
 
 
 
 module.exports = {
     adminRouter: adminRouter
-}
+};
