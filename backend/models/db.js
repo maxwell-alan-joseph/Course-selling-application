@@ -21,7 +21,7 @@ const userSchema = new Schema (
     }
 );
 
-userSchema.pre('save', async (next) => {
+userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) 
         return next();
     this.password = await bcrypt.hash(this.password, 8);
@@ -37,7 +37,7 @@ const adminSchema = new Schema(
     { timestamps: true }
 );
 
-adminSchema.pre('save', async (next) => {
+adminSchema.pre('save', async function (next) {
     if (!this.isModified('password'))
         return next();
     this.password = await bcrypt.hash(this.password, 12);

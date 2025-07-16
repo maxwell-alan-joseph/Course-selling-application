@@ -43,8 +43,9 @@ userRouter.post("/signup", validateRequest(userSignupSchema), async (req, res) =
         });
 
     } catch (err) {
+        console.log(`${err}`);
         res.status(500).json({
-            message: "Server Error"
+            message: "Server Error",
         });
     }
 
