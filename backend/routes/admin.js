@@ -138,7 +138,7 @@ adminRouter.put("/courses/:courseId", adminAuthMiddleware, validateRequest(updat
 });
 
 
-adminRouter.delete("/courses/:courseId", adminRouter, async (req, res) => {
+adminRouter.delete("/courses/:courseId", adminAuthMiddleware, async (req, res) => {
     try {
         const { courseId } = req.params;
         const adminId = req.adminId;

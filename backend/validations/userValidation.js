@@ -15,6 +15,6 @@ const purchaseSchema = z.object({
     courseId: z.string().length(12, "Invalid course ID format")
 });
 
-module.export = {
+module.exports= {
     userSignupSchema, userLoginSchema, purchaseSchema 
 }
